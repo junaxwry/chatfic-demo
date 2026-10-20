@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Chatfic Demo</title>
+  <title>iOS Chatfic Simulator</title>
   <style>
     * {
       box-sizing: border-box;
@@ -15,7 +15,7 @@
 
     body {
       background-color: #0d0d0d;
-      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Helvetica Neue", Arial, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", sans-serif;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -24,7 +24,6 @@
       overflow: hidden;
     }
 
-    /* Phone Shell Styling */
     .phone-container {
       width: 100%;
       max-width: 414px;
@@ -44,7 +43,7 @@
       }
     }
 
-    /* Wallpaper Configuration */
+    /* Wallpaper */
     .wallpaper-bg {
       position: absolute;
       top: 0;
@@ -56,15 +55,9 @@
       background-position: center;
       background-repeat: no-repeat;
       z-index: 1;
-      transition: transform 0.4s ease, filter 0.4s ease;
     }
 
-    .blur-bg {
-      filter: blur(20px) brightness(0.7);
-      transform: scale(1.08);
-    }
-
-    /* Dynamic Island / Notch */
+    /* Dynamic Island */
     .dynamic-island {
       position: absolute;
       top: 10px;
@@ -77,8 +70,8 @@
       z-index: 100;
     }
 
-    /* Screen Views */
-    .view {
+    /* Views / Screens */
+    .screen-view {
       position: absolute;
       top: 0;
       left: 0;
@@ -87,500 +80,404 @@
       z-index: 10;
       display: flex;
       flex-direction: column;
-      transition: opacity 0.3s ease, transform 0.3s ease;
+      transition: opacity 0.25s ease;
     }
 
     .hidden {
-      opacity: 0;
-      pointer-events: none;
-      transform: scale(0.95);
+      display: none !important;
     }
 
-    /* Top Status Bar */
-    .status-bar {
-      height: 48px;
-      padding: 0 24px;
-      display: flex;
+    /* Home Screen View */
+    .home-screen {
+      padding: 50px 20px 40px 20px;
       justify-content: space-between;
-      align-items: center;
-      font-size: 14px;
-      font-weight: 600;
-      z-index: 20;
+      z-index: 5;
     }
 
-    .status-icons {
+    .widgets-area {
       display: flex;
-      gap: 6px;
-      align-items: center;
-    }
-
-    /* ---------------- LOCK SCREEN ---------------- */
-    .lock-screen-content {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding-top: 20px;
-    }
-
-    .date-display {
-      font-size: 16px;
-      font-weight: 600;
-      opacity: 0.9;
-    }
-
-    .clock-display {
-      font-size: 72px;
-      font-weight: 700;
-      line-height: 1;
-      margin-top: 4px;
-      margin-bottom: 25px;
-      letter-spacing: -2px;
-    }
-
-    /* iOS Notification Card */
-    .notification-card {
-      width: 88%;
-      background: rgba(255, 255, 255, 0.25);
-      backdrop-filter: blur(25px);
-      -webkit-backdrop-filter: blur(25px);
-      border-radius: 18px;
-      padding: 14px 16px;
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-    }
-
-    .notif-header {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      margin-bottom: 6px;
-    }
-
-    .notif-icon {
-      width: 20px;
-      height: 20px;
-      background-color: #ff3b30;
-      border-radius: 5px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-size: 11px;
-    }
-
-    .notif-title {
-      font-size: 13px;
-      font-weight: 600;
-      opacity: 0.8;
-      flex: 1;
-    }
-
-    .notif-time {
-      font-size: 11px;
-      opacity: 0.6;
-    }
-
-    .notif-body {
-      font-size: 14px;
-      font-weight: 600;
-      line-height: 1.3;
-    }
-
-    .notif-subtext {
-      font-size: 12px;
-      opacity: 0.8;
-      margin-top: 2px;
-    }
-
-    .lock-bottom {
-      margin-top: auto;
-      padding-bottom: 40px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+      gap: 16px;
       width: 100%;
     }
 
-    .quick-actions {
-      display: flex;
-      justify-content: space-between;
-      width: 80%;
-      margin-bottom: 30px;
+    .widget {
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-radius: 22px;
+      padding: 14px;
+      flex: 1;
+      font-size: 13px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
     }
 
-    .icon-btn {
+    .app-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px 12px;
+      padding: 10px;
+    }
+
+    .app-icon {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+    }
+
+    .app-box {
+      width: 60px;
+      height: 60px;
+      border-radius: 14px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 28px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    }
+
+    .app-name {
+      font-size: 11px;
+      font-weight: 500;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.8);
+    }
+
+    .dock {
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(25px);
+      -webkit-backdrop-filter: blur(25px);
+      border-radius: 30px;
+      padding: 10px 16px;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .dock .app-box {
+      width: 56px;
+      height: 56px;
+    }
+
+    /* ---------------- CHAT APP STYLES ---------------- */
+    .app-container {
+      background-color: #121212;
+      z-index: 20;
+    }
+
+    .app-header {
+      background: #1e1e1e;
+      padding: 14px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #2a2a2a;
+      margin-top: 32px; /* Clears dynamic island */
+    }
+
+    .app-title {
+      font-size: 22px;
+      font-weight: bold;
+    }
+
+    /* Chat List */
+    .chat-list {
+      flex: 1;
+      overflow-y: auto;
+      background: #121212;
+    }
+
+    .chat-item {
+      display: flex;
+      align-items: center;
+      padding: 12px 16px;
+      gap: 14px;
+      border-bottom: 1px solid #1a1a1a;
+      cursor: pointer;
+    }
+
+    .chat-item:active {
+      background: #252525;
+    }
+
+    .chat-avatar {
       width: 48px;
       height: 48px;
       border-radius: 50%;
-      background: rgba(0, 0, 0, 0.3);
-      backdrop-filter: blur(15px);
+      background: #555;
+      object-fit: cover;
       display: flex;
       justify-content: center;
       align-items: center;
+      font-weight: bold;
       font-size: 18px;
-      border: none;
-      color: white;
-      cursor: pointer;
     }
 
-    .swipe-hint {
-      font-size: 13px;
-      font-weight: 500;
-      opacity: 0.8;
-      animation: pulse 2s infinite;
+    .chat-info {
+      flex: 1;
     }
 
-    @keyframes pulse {
-      0%, 100% { opacity: 0.4; }
-      50% { opacity: 0.9; }
-    }
-
-    /* ---------------- PASSCODE SCREEN ---------------- */
-    .passcode-view {
+    .chat-name-row {
+      display: flex;
       justify-content: space-between;
-      align-items: center;
-      padding: 60px 0 40px 0;
+      margin-bottom: 4px;
     }
 
-    .passcode-header {
-      text-align: center;
-    }
-
-    .passcode-title {
-      font-size: 18px;
+    .chat-name {
+      font-size: 15px;
       font-weight: 600;
-      margin-bottom: 16px;
     }
 
-    .passcode-dots {
-      display: flex;
-      gap: 16px;
-      justify-content: center;
+    .chat-time {
+      font-size: 12px;
+      color: #8e8e93;
     }
 
-    .dot {
-      width: 12px;
-      height: 12px;
-      border-radius: 50%;
-      border: 1.5px solid #ffffff;
-      transition: background-color 0.2s ease;
+    .chat-preview {
+      font-size: 13px;
+      color: #8e8e93;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 240px;
     }
 
-    .dot.filled {
-      background-color: #ffffff;
-    }
-
-    .keypad {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 16px 24px;
-      width: 280px;
-    }
-
-    .key {
-      width: 72px;
-      height: 72px;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, 0.2);
-      backdrop-filter: blur(20px);
-      border: none;
-      color: #ffffff;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      cursor: pointer;
-      margin: 0 auto;
-    }
-
-    .key:active {
-      background: rgba(255, 255, 255, 0.5);
-    }
-
-    .key-number {
-      font-size: 28px;
-      font-weight: 400;
-      line-height: 1;
-    }
-
-    .key-letters {
-      font-size: 9px;
-      font-weight: 700;
-      letter-spacing: 1.5px;
-      margin-top: 2px;
-      opacity: 0.8;
-    }
-
-    .passcode-footer {
-      display: flex;
-      justify-content: space-between;
-      width: 260px;
-      font-size: 14px;
-      font-weight: 500;
-    }
-
-    .action-btn {
-      background: none;
-      border: none;
-      color: #ffffff;
-      cursor: pointer;
-      font-size: 14px;
-    }
-
-    /* ---------------- CHAT INTERFACE ---------------- */
-    .chat-view {
-      background-color: #121212;
-      z-index: 30;
-    }
-
-    .chat-header {
+    /* Individual Chat Room */
+    .room-header {
       background: #1e1e1e;
       padding: 12px 16px;
       display: flex;
       align-items: center;
       gap: 12px;
       border-bottom: 1px solid #2a2a2a;
+      margin-top: 32px;
     }
 
-    .avatar {
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      background: #007aff;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-weight: bold;
+    .back-btn {
+      background: none;
+      border: none;
+      color: #007aff;
+      font-size: 16px;
+      cursor: pointer;
+      font-weight: 500;
     }
 
-    .chat-user-info {
-      flex: 1;
-    }
-
-    .chat-user-name {
-      font-size: 15px;
-      font-weight: 600;
-    }
-
-    .chat-user-status {
-      font-size: 11px;
-      color: #34c759;
-    }
-
-    .chat-body {
+    .room-body {
       flex: 1;
       padding: 16px;
       overflow-y: auto;
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 10px;
+      background: #000000;
     }
 
     .msg {
       max-width: 75%;
       padding: 10px 14px;
-      border-radius: 18px;
-      font-size: 15px;
+      border-radius: 16px;
+      font-size: 14px;
       line-height: 1.4;
       word-wrap: break-word;
     }
 
-    .sent {
-      background-color: #0b84ff;
-      color: #ffffff;
-      align-self: flex-end;
-      border-bottom-right-radius: 4px;
-    }
-
-    .received {
+    .msg.received {
       background-color: #2c2c2e;
       color: #ffffff;
       align-self: flex-start;
       border-bottom-left-radius: 4px;
     }
 
-    .chat-footer-hint {
-      text-align: center;
-      padding: 10px;
-      font-size: 12px;
+    .msg.sent {
+      background-color: #0a84ff;
+      color: #ffffff;
+      align-self: flex-end;
+      border-bottom-right-radius: 4px;
+    }
+
+    .room-footer {
+      padding: 12px 16px;
+      background: #1e1e1e;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+    }
+
+    .tap-prompt {
+      flex: 1;
+      background: #2c2c2e;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 20px;
       color: #8e8e93;
-      border-top: 1px solid #1e1e1e;
+      font-size: 14px;
+      text-align: left;
     }
   </style>
 </head>
 <body>
 
   <div class="phone-container">
-    <!-- Background Wallpaper -->
-    <div id="wallpaper" class="wallpaper-bg"></div>
-
-    <!-- Dynamic Island Header -->
+    <div class="wallpaper-bg"></div>
     <div class="dynamic-island"></div>
 
-    <!-- Global Top Status Bar -->
-    <div class="status-bar">
-      <span id="time-status">03:33</span>
-      <div class="status-icons">
-        <span>📶</span>
-        <span>wifi</span>
-        <span>11%</span>
+    <!-- ================= 1. HOME SCREEN ================= -->
+    <div id="home-screen" class="screen-view home-screen">
+      <div class="widgets-area">
+        <div class="widget">
+          <div style="font-weight: 600; opacity: 0.8; font-size: 11px;">SATURDAY 17</div>
+          <div style="font-size: 15px; font-weight: bold; margin-top: 4px;">Groceries</div>
+          <div style="font-size: 11px; opacity: 0.7;">All-day</div>
+        </div>
+        <div class="widget">
+          <div style="font-weight: 600; opacity: 0.8; font-size: 11px;">Seoul ☀️</div>
+          <div style="font-size: 22px; font-weight: bold; margin-top: 2px;">18°</div>
+          <div style="font-size: 10px; opacity: 0.7;">Mostly Sunny</div>
+        </div>
+      </div>
+
+      <div class="app-grid">
+        <div class="app-icon" onclick="openApp('Instagram')">
+          <div class="app-box" style="background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);">📷</div>
+          <span class="app-name">Instagram</span>
+        </div>
+        <div class="app-icon" onclick="openApp('Photos')">
+          <div class="app-box" style="background: #ffffff;">🌸</div>
+          <span class="app-name">Photos</span>
+        </div>
+        <div class="app-icon" onclick="openApp('Mail')">
+          <div class="app-box" style="background: #007aff;">✉️</div>
+          <span class="app-name">Mail</span>
+        </div>
+        <div class="app-icon" onclick="openApp('Calendar')">
+          <div class="app-box" style="background: #ffffff; color: red;">📅</div>
+          <span class="app-name">Calendar</span>
+        </div>
+        <div class="app-icon" onclick="openApp('Clock')">
+          <div class="app-box" style="background: #000000; border: 2px solid #333;">⏰</div>
+          <span class="app-name">Clock</span>
+        </div>
+        <div class="app-icon" onclick="openApp('Notes')">
+          <div class="app-box" style="background: #ffcc00;">📝</div>
+          <span class="app-name">Notes</span>
+        </div>
+        <div class="app-icon" onclick="openApp('Weather')">
+          <div class="app-box" style="background: linear-gradient(#4a90e2, #50e3c2);">🌤️</div>
+          <span class="app-name">Weather</span>
+        </div>
+        <div class="app-icon" onclick="openApp('Settings')">
+          <div class="app-box" style="background: #8e8e93;">⚙️</div>
+          <span class="app-name">Settings</span>
+        </div>
+      </div>
+
+      <div class="dock">
+        <div class="app-icon" onclick="openApp('Phone')">
+          <div class="app-box" style="background: #34c759;">📞</div>
+        </div>
+        <div class="app-icon" onclick="openApp('Safari')">
+          <div class="app-box" style="background: linear-gradient(#1e90ff, #00bfff);">🌐</div>
+        </div>
+        <div class="app-icon" onclick="openApp('Chats')">
+          <div class="app-box" style="background: #ffcc00; color: #000;" onclick="openChatApp()">💬</div>
+        </div>
+        <div class="app-icon" onclick="openApp('Music')">
+          <div class="app-box" style="background: linear-gradient(#ff2d55, #ff3b30);">🎵</div>
+        </div>
       </div>
     </div>
 
-    <!-- ================= VIEW 1: LOCK SCREEN ================= -->
-    <div id="lock-screen" class="view" onclick="showPasscodeView()">
-      <div class="lock-screen-content">
-        <div class="date-display">Rabu, 21 Oktober</div>
-        <div class="clock-display">03:33</div>
-
-        <!-- Notification Banner -->
-        <div class="notification-card">
-          <div class="notif-header">
-            <div class="notif-icon">📋</div>
-            <div class="notif-title">Ultah Sadewa 🎂</div>
-            <div class="notif-time">now</div>
+    <!-- ================= 2. CHAT APP LIST ================= -->
+    <div id="chat-list-screen" class="screen-view app-container hidden">
+      <div class="app-header">
+        <span class="app-title">Chats</span>
+        <span style="color: #007aff; font-size: 16px; cursor: pointer;" onclick="goHome()">Home</span>
+      </div>
+      <div class="chat-list">
+        <div class="chat-item" onclick="openChatRoom()">
+          <div class="chat-avatar" style="background: #444;">W</div>
+          <div class="chat-info">
+            <div class="chat-name-row">
+              <span class="chat-name">Yudistira</span>
+              <span class="chat-time">10:00 AM</span>
+            </div>
+            <div class="chat-preview">kamu ga sayang sama aku ya</div>
           </div>
-          <div class="notif-body">December 12 · in 52 days</div>
         </div>
-      </div>
-
-      <div class="lock-bottom">
-        <div class="quick-actions">
-          <button class="icon-btn">🔦</button>
-          <button class="icon-btn">📷</button>
-        </div>
-        <div class="swipe-hint">Ketuk atau Geser untuk Membuka</div>
       </div>
     </div>
 
-    <!-- ================= VIEW 2: PASSCODE SCREEN ================= -->
-    <div id="passcode-screen" class="view passcode-view hidden">
-      <div class="passcode-header">
-        <div class="passcode-title">Enter Passcode</div>
-        <div class="passcode-dots">
-          <div class="dot"></div>
-          <div class="dot"></div>
-          <div class="dot"></div>
-          <div class="dot"></div>
-        </div>
+    <!-- ================= 3. INDIVIDUAL CHAT ROOM ================= -->
+    <div id="chat-room-screen" class="screen-view app-container hidden">
+      <div class="room-header">
+        <button class="back-btn" onclick="openChatApp()">‹ Chats</button>
+        <span style="font-weight: 600; font-size: 16px; flex: 1;">Lee So-hee</span>
+        <span style="color: #007aff; font-size: 14px; cursor: pointer;" onclick="goHome()">Home</span>
       </div>
-
-      <!-- Keypad -->
-      <div class="keypad">
-        <button class="key" onclick="pressKey('1')"><span class="key-number">1</span></button>
-        <button class="key" onclick="pressKey('2')"><span class="key-number">2</span><span class="key-letters">ABC</span></button>
-        <button class="key" onclick="pressKey('3')"><span class="key-number">3</span><span class="key-letters">DEF</span></button>
-        <button class="key" onclick="pressKey('4')"><span class="key-number">4</span><span class="key-letters">GHI</span></button>
-        <button class="key" onclick="pressKey('5')"><span class="key-number">5</span><span class="key-letters">JKL</span></button>
-        <button class="key" onclick="pressKey('6')"><span class="key-number">6</span><span class="key-letters">MNO</span></button>
-        <button class="key" onclick="pressKey('7')"><span class="key-number">7</span><span class="key-letters">PQRS</span></button>
-        <button class="key" onclick="pressKey('8')"><span class="key-number">8</span><span class="key-letters">TUV</span></button>
-        <button class="key" onclick="pressKey('9')"><span class="key-number">9</span><span class="key-letters">WXYZ</span></button>
-        <button class="key" style="visibility: hidden;"></button>
-        <button class="key" onclick="pressKey('0')"><span class="key-number">0</span></button>
+      <div id="room-body" class="room-body" onclick="nextChatMessage()">
+        <!-- Messages appear here on tap -->
       </div>
-
-      <div class="passcode-footer">
-        <button class="action-btn">Emergency</button>
-        <button class="action-btn" onclick="deleteDigit()">Delete</button>
+      <div class="room-footer" onclick="nextChatMessage()">
+        <div class="tap-prompt">Ketuk layar untuk balas pesan...</div>
       </div>
-    </div>
-
-    <!-- ================= VIEW 3: CHAT VIEW ================= -->
-    <div id="chat-screen" class="view chat-view hidden" onclick="nextMessage()">
-      <div class="chat-header">
-        <div class="avatar">W</div>
-        <div class="chat-user-info">
-          <div class="chat-user-name">Sadewa ✓</div>
-          <div class="chat-user-status">Online</div>
-        </div>
-      </div>
-
-      <div id="chat-body" class="chat-body">
-        <!-- Story messages render here on tap -->
-      </div>
-
-      <div class="chat-footer-hint">Ketuk di mana saja untuk melanjutkan percakapan</div>
     </div>
 
   </div>
 
   <script>
-    // System Variables
-    const CORRECT_PASSCODE = "1121"; // You can change the passcode here
-    let currentInput = "";
-    let messageIndex = 0;
-
-    // Chatfic Dialog Story
-    const storyData = [
-      { sender: "received", text: "Yudis, kamu dimana?" },
-      { sender: "sent", text: "Aku sama Juna, mas." },
-      { sender: "received", text: "oh." },
-      { sender: "sent", text: "Kenapa Mas?" },
-      { sender: "received", text: "Ada hal yang kita perlu omongin.. bisa jumpa saya sebentar di di antara?" },
-      { sender: "sent", text: "boleh mas, bentar ya. aku otw." },
+    let chatIndex = 0;
+    const chatStory = [
+      { sender: "received", text: "junaaaaa" },
+      { sender: "sent", text: "kenapa dis" },
+      { sender: "received", text: "kangen, ayo keluar" },
+      { sender: "sent", text: "gmw ah, gw udh makan" },
+      { sender: "received", text: ":((( hayolo temenin aku makan coba" },
+      { sender: "sent", text: "gmw dis" },
+      { sender: "received", text: "kok gitu" },
+      { sender: "received", text: "kamu ga sayang sama aku ya" },
+      { sender: "sent", text: "apasih" },
+      { sender: "sent", text: "gjls" }
     ];
 
-    // Navigation Logic
-    function showPasscodeView() {
-      document.getElementById('lock-screen').classList.add('hidden');
-      document.getElementById('passcode-screen').classList.remove('hidden');
-      document.getElementById('wallpaper').classList.add('blur-bg');
-    }
-
-    function pressKey(num) {
-      if (currentInput.length < 4) {
-        currentInput += num;
-        updateDots();
-      }
-
-      if (currentInput.length === 4) {
-        setTimeout(verifyPasscode, 200);
-      }
-    }
-
-    function deleteDigit() {
-      if (currentInput.length > 0) {
-        currentInput = currentInput.slice(0, -1);
-        updateDots();
-      }
-    }
-
-    function updateDots() {
-      const dots = document.querySelectorAll('.dot');
-      dots.forEach((dot, index) => {
-        if (index < currentInput.length) {
-          dot.classList.add('filled');
-        } else {
-          dot.classList.remove('filled');
-        }
-      });
-    }
-
-    function verifyPasscode() {
-      if (currentInput === CORRECT_PASSCODE || currentInput === "0000") {
-        document.getElementById('passcode-screen').classList.add('hidden');
-        document.getElementById('chat-screen').classList.remove('hidden');
+    function openApp(appName) {
+      if (appName === 'Chats') {
+        openChatApp();
       } else {
-        alert('Passcode Salah! Coba lagi (Hint: 1121)');
-        currentInput = "";
-        updateDots();
+        alert(appName + " app clicked! We can code this next.");
       }
     }
 
-    function nextMessage() {
-      if (messageIndex < storyData.length) {
-        const msg = storyData[messageIndex];
-        const chatBody = document.getElementById('chat-body');
+    function goHome() {
+      document.getElementById('home-screen').classList.remove('hidden');
+      document.getElementById('chat-list-screen').classList.add('hidden');
+      document.getElementById('chat-room-screen').classList.add('hidden');
+    }
+
+    function openChatApp() {
+      document.getElementById('home-screen').classList.add('hidden');
+      document.getElementById('chat-room-screen').classList.add('hidden');
+      document.getElementById('chat-list-screen').classList.remove('hidden');
+    }
+
+    function openChatRoom() {
+      document.getElementById('chat-list-screen').classList.add('hidden');
+      document.getElementById('chat-room-screen').classList.remove('hidden');
+    }
+
+    function nextChatMessage() {
+      if (chatIndex < chatStory.length) {
+        const msg = chatStory[chatIndex];
+        const roomBody = document.getElementById('room-body');
 
         const bubble = document.createElement('div');
         bubble.className = `msg ${msg.sender}`;
         bubble.textContent = msg.text;
 
-        chatBody.appendChild(bubble);
-        chatBody.scrollTop = chatBody.scrollHeight;
-
-        messageIndex++;
+        roomBody.appendChild(bubble);
+        roomBody.scrollTop = roomBody.scrollHeight;
+        chatIndex++;
       }
     }
   </script>
