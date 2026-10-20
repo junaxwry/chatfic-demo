@@ -55,6 +55,12 @@
       background-position: center;
       background-repeat: no-repeat;
       z-index: 1;
+      transition: filter 0.4s ease, transform 0.4s ease;
+    }
+
+    .blur-bg {
+      filter: blur(20px) brightness(0.7);
+      transform: scale(1.08);
     }
 
     /* Dynamic Island */
@@ -70,7 +76,7 @@
       z-index: 100;
     }
 
-    /* Views / Screens */
+    /* Screen Views */
     .screen-view {
       position: absolute;
       top: 0;
@@ -80,14 +86,184 @@
       z-index: 10;
       display: flex;
       flex-direction: column;
-      transition: opacity 0.25s ease;
+      transition: opacity 0.3s ease;
     }
 
     .hidden {
       display: none !important;
     }
 
-    /* Home Screen View */
+    /* ---------------- 1. LOCK SCREEN ---------------- */
+    .lock-screen {
+      justify-content: space-between;
+      padding: 50px 20px 40px 20px;
+      z-index: 15;
+      cursor: pointer;
+    }
+
+    .lock-top {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 10px;
+    }
+
+    .date-display {
+      font-size: 16px;
+      font-weight: 600;
+      opacity: 0.9;
+    }
+
+    .clock-display {
+      font-size: 76px;
+      font-weight: 700;
+      letter-spacing: -2px;
+      line-height: 1;
+      margin-top: 4px;
+      margin-bottom: 20px;
+    }
+
+    .notification-card {
+      width: 90%;
+      background: rgba(255, 255, 255, 0.25);
+      backdrop-filter: blur(25px);
+      -webkit-backdrop-filter: blur(25px);
+      border-radius: 18px;
+      padding: 14px 16px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    }
+
+    .lock-bottom {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+    }
+
+    .quick-actions {
+      display: flex;
+      justify-content: space-between;
+      width: 82%;
+      margin-bottom: 24px;
+    }
+
+    .icon-btn {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: rgba(0, 0, 0, 0.35);
+      backdrop-filter: blur(15px);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 18px;
+      border: none;
+      color: white;
+    }
+
+    .swipe-hint {
+      font-size: 13px;
+      font-weight: 500;
+      opacity: 0.8;
+    }
+
+    /* ---------------- 2. PASSCODE SCREEN ---------------- */
+    .passcode-screen {
+      justify-content: space-between;
+      align-items: center;
+      padding: 70px 0 50px 0;
+      z-index: 20;
+      background: rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(10px);
+    }
+
+    .passcode-header {
+      text-align: center;
+    }
+
+    .passcode-title {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 16px;
+    }
+
+    .passcode-dots {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+    }
+
+    .dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      border: 1.5px solid #ffffff;
+      transition: background-color 0.2s;
+    }
+
+    .dot.filled {
+      background-color: #ffffff;
+    }
+
+    .keypad {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px 24px;
+      width: 280px;
+    }
+
+    .key {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(20px);
+      border: none;
+      color: #ffffff;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      margin: 0 auto;
+    }
+
+    .key:active {
+      background: rgba(255, 255, 255, 0.5);
+    }
+
+    .key-number {
+      font-size: 28px;
+      font-weight: 400;
+      line-height: 1;
+    }
+
+    .key-letters {
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      margin-top: 2px;
+      opacity: 0.8;
+    }
+
+    .passcode-footer {
+      display: flex;
+      justify-content: space-between;
+      width: 260px;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .action-btn {
+      background: none;
+      border: none;
+      color: #ffffff;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    /* ---------------- 3. HOME SCREEN ---------------- */
     .home-screen {
       padding: 50px 20px 40px 20px;
       justify-content: space-between;
@@ -160,10 +336,10 @@
       height: 56px;
     }
 
-    /* ---------------- CHAT APP STYLES ---------------- */
+    /* ---------------- 4. CHAT APP STYLES ---------------- */
     .app-container {
       background-color: #121212;
-      z-index: 20;
+      z-index: 25;
     }
 
     .app-header {
@@ -173,7 +349,7 @@
       justify-content: space-between;
       align-items: center;
       border-bottom: 1px solid #2a2a2a;
-      margin-top: 32px; /* Clears dynamic island */
+      margin-top: 32px;
     }
 
     .app-title {
@@ -181,7 +357,6 @@
       font-weight: bold;
     }
 
-    /* Chat List */
     .chat-list {
       flex: 1;
       overflow-y: auto;
@@ -205,8 +380,7 @@
       width: 48px;
       height: 48px;
       border-radius: 50%;
-      background: #555;
-      object-fit: cover;
+      background: #444;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -243,7 +417,7 @@
       max-width: 240px;
     }
 
-    /* Individual Chat Room */
+    /* Chat Room */
     .room-header {
       background: #1e1e1e;
       padding: 12px 16px;
@@ -320,11 +494,68 @@
 <body>
 
   <div class="phone-container">
-    <div class="wallpaper-bg"></div>
+    <div id="wallpaper" class="wallpaper-bg"></div>
     <div class="dynamic-island"></div>
 
-    <!-- ================= 1. HOME SCREEN ================= -->
-    <div id="home-screen" class="screen-view home-screen">
+    <!-- ================= 1. LOCK SCREEN ================= -->
+    <div id="lock-screen" class="screen-view lock-screen" onclick="showPasscodeView()">
+      <div class="lock-top">
+        <div class="date-display">Saturday, October 17</div>
+        <div class="clock-display">10:00</div>
+
+        <div class="notification-card">
+          <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
+            <div style="width: 18px; height: 18px; background: #ff3b30; border-radius: 4px; display: flex; justify-content: center; align-items: center; font-size: 10px;">💬</div>
+            <span style="font-size: 13px; font-weight: 600; flex: 1; opacity: 0.85;">Yudistira</span>
+            <span style="font-size: 11px; opacity: 0.6;">now</span>
+          </div>
+          <div style="font-size: 13px; font-weight: 600;">kamu ga sayang sama aku ya</div>
+        </div>
+      </div>
+
+      <div class="lock-bottom">
+        <div class="quick-actions">
+          <button class="icon-btn">🔦</button>
+          <button class="icon-btn">📷</button>
+        </div>
+        <div class="swipe-hint">Tap to Open</div>
+      </div>
+    </div>
+
+    <!-- ================= 2. PASSCODE SCREEN ================= -->
+    <div id="passcode-screen" class="screen-view passcode-screen hidden">
+      <div class="passcode-header">
+        <div class="passcode-title">Enter Passcode</div>
+        <div class="passcode-dots">
+          <div class="dot"></div>
+          <div class="dot"></div>
+          <div class="dot"></div>
+          <div class="dot"></div>
+        </div>
+      </div>
+
+      <div class="keypad">
+        <button class="key" onclick="pressKey('1')"><span class="key-number">1</span></button>
+        <button class="key" onclick="pressKey('2')"><span class="key-number">2</span><span class="key-letters">ABC</span></button>
+        <button class="key" onclick="pressKey('3')"><span class="key-number">3</span><span class="key-letters">DEF</span></button>
+        <button class="key" onclick="pressKey('4')"><span class="key-number">4</span><span class="key-letters">GHI</span></button>
+        <button class="key" onclick="pressKey('5')"><span class="key-number">5</span><span class="key-letters">JKL</span></button>
+        <button class="key" onclick="pressKey('6')"><span class="key-number">6</span><span class="key-letters">MNO</span></button>
+        <button class="key" onclick="pressKey('7')"><span class="key-number">7</span><span class="key-letters">PQRS</span></button>
+        <button class="key" onclick="pressKey('8')"><span class="key-number">8</span><span class="key-letters">TUV</span></button>
+        <button class="key" onclick="pressKey('9')"><span class="key-number">9</span><span class="key-letters">WXYZ</span></button>
+        <button class="key" style="visibility: hidden;"></button>
+        <button class="key" onclick="pressKey('0')"><span class="key-number">0</span></button>
+      </div>
+
+      <div class="passcode-footer">
+        <button class="action-btn">Emergency</button>
+        <button class="action-btn" onclick="deleteDigit()">Delete</button>
+      </div>
+    </div>
+
+    <!-- ================= 3. HOME SCREEN ================= -->
+    <div id="home-screen" class="screen-view home-screen hidden">
       <div class="widgets-area">
         <div class="widget">
           <div style="font-weight: 600; opacity: 0.8; font-size: 11px;">SATURDAY 17</div>
@@ -339,51 +570,51 @@
       </div>
 
       <div class="app-grid">
-        <div class="app-icon" onclick="openApp('Instagram')">
+        <div class="app-icon" onclick="alert('Instagram App')">
           <div class="app-box" style="background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);">📷</div>
           <span class="app-name">Instagram</span>
         </div>
-        <div class="app-icon" onclick="openApp('Photos')">
+        <div class="app-icon" onclick="alert('Photos App')">
           <div class="app-box" style="background: #ffffff;">🌸</div>
           <span class="app-name">Photos</span>
         </div>
-        <div class="app-icon" onclick="openApp('Mail')">
+        <div class="app-icon" onclick="alert('Mail App')">
           <div class="app-box" style="background: #007aff;">✉️</div>
           <span class="app-name">Mail</span>
         </div>
-        <div class="app-icon" onclick="openApp('Calendar')">
+        <div class="app-icon" onclick="alert('Calendar App')">
           <div class="app-box" style="background: #ffffff; color: red;">📅</div>
           <span class="app-name">Calendar</span>
         </div>
-        <div class="app-icon" onclick="openApp('Clock')">
+        <div class="app-icon" onclick="alert('Clock App')">
           <div class="app-box" style="background: #000000; border: 2px solid #333;">⏰</div>
           <span class="app-name">Clock</span>
         </div>
-        <div class="app-icon" onclick="openApp('Notes')">
+        <div class="app-icon" onclick="alert('Notes App')">
           <div class="app-box" style="background: #ffcc00;">📝</div>
           <span class="app-name">Notes</span>
         </div>
-        <div class="app-icon" onclick="openApp('Weather')">
+        <div class="app-icon" onclick="alert('Weather App')">
           <div class="app-box" style="background: linear-gradient(#4a90e2, #50e3c2);">🌤️</div>
           <span class="app-name">Weather</span>
         </div>
-        <div class="app-icon" onclick="openApp('Settings')">
+        <div class="app-icon" onclick="alert('Settings App')">
           <div class="app-box" style="background: #8e8e93;">⚙️</div>
           <span class="app-name">Settings</span>
         </div>
       </div>
 
       <div class="dock">
-        <div class="app-icon" onclick="openApp('Phone')">
+        <div class="app-icon" onclick="alert('Phone App')">
           <div class="app-box" style="background: #34c759;">📞</div>
         </div>
-        <div class="app-icon" onclick="openApp('Safari')">
+        <div class="app-icon" onclick="alert('Safari App')">
           <div class="app-box" style="background: linear-gradient(#1e90ff, #00bfff);">🌐</div>
         </div>
-        <div class="app-icon" onclick="openApp('Chats')">
-          <div class="app-box" style="background: #ffcc00; color: #000;" onclick="openChatApp()">💬</div>
+        <div class="app-icon" onclick="openChatApp()">
+          <div class="app-box" style="background: #ffcc00; color: #000;">💬</div>
         </div>
-        <div class="app-icon" onclick="openApp('Music')">
+        <div class="app-icon" onclick="alert('Music App')">
           <div class="app-box" style="background: linear-gradient(#ff2d55, #ff3b30);">🎵</div>
         </div>
       </div>
@@ -397,7 +628,7 @@
       </div>
       <div class="chat-list">
         <div class="chat-item" onclick="openChatRoom()">
-          <div class="chat-avatar" style="background: #444;">W</div>
+          <div class="chat-avatar" style="background: #444;">Y</div>
           <div class="chat-info">
             <div class="chat-name-row">
               <span class="chat-name">Yudistira</span>
@@ -413,7 +644,7 @@
     <div id="chat-room-screen" class="screen-view app-container hidden">
       <div class="room-header">
         <button class="back-btn" onclick="openChatApp()">‹ Chats</button>
-        <span style="font-weight: 600; font-size: 16px; flex: 1;">Lee So-hee</span>
+        <span style="font-weight: 600; font-size: 16px; flex: 1;">Yudistira</span>
         <span style="color: #007aff; font-size: 14px; cursor: pointer;" onclick="goHome()">Home</span>
       </div>
       <div id="room-body" class="room-body" onclick="nextChatMessage()">
@@ -427,7 +658,10 @@
   </div>
 
   <script>
+    const CORRECT_PASSCODE = "1121"; // Change passcode here if needed
+    let currentInput = "";
     let chatIndex = 0;
+    
     const chatStory = [
       { sender: "received", text: "junaaaaa" },
       { sender: "sent", text: "kenapa dis" },
@@ -441,11 +675,48 @@
       { sender: "sent", text: "gjls" }
     ];
 
-    function openApp(appName) {
-      if (appName === 'Chats') {
-        openChatApp();
+    function showPasscodeView() {
+      document.getElementById('lock-screen').classList.add('hidden');
+      document.getElementById('passcode-screen').classList.remove('hidden');
+      document.getElementById('wallpaper').classList.add('blur-bg');
+    }
+
+    function pressKey(num) {
+      if (currentInput.length < 4) {
+        currentInput += num;
+        updateDots();
+      }
+      if (currentInput.length === 4) {
+        setTimeout(verifyPasscode, 200);
+      }
+    }
+
+    function deleteDigit() {
+      if (currentInput.length > 0) {
+        currentInput = currentInput.slice(0, -1);
+        updateDots();
+      }
+    }
+
+    function updateDots() {
+      const dots = document.querySelectorAll('.dot');
+      dots.forEach((dot, index) => {
+        if (index < currentInput.length) {
+          dot.classList.add('filled');
+        } else {
+          dot.classList.remove('filled');
+        }
+      });
+    }
+
+    function verifyPasscode() {
+      if (currentInput === CORRECT_PASSCODE || currentInput === "0000") {
+        document.getElementById('passcode-screen').classList.add('hidden');
+        document.getElementById('home-screen').classList.remove('hidden');
       } else {
-        alert(appName + " app clicked! We can code this next.");
+        alert('Passcode Salah! (Hint: 1121)');
+        currentInput = "";
+        updateDots();
       }
     }
 
