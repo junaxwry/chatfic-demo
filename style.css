@@ -1,7 +1,0 @@
-/* Dynamic Wallpaper Background */
-    .space-wallpaper {
-      background-image: url('wallpaper.jpg');
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-    }
