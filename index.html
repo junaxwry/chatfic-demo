@@ -1,31 +1,418 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8"  />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Chatfic Story</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta charset=UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no: />
+  <title>iPhone Lock Screen & Chatfic</title>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+    /* Custom CSS Styles */
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      user-select: none;
+      -webkit-user-select: none;
+      touch-action: manipulation;
+    }
+
+    /* Dynamic Wallpaper Background */
+    .space-wallpaper {
+      background: radial-gradient(circle at 50% 30%, #1a103c, #0d081e 60%, #05020a);
+      background-image: 
+        radial-gradient(2px 2px at 20px 30px, #ffffff, rgba(0,0,0,0)),
+        radial-gradient(2px 2px at 40px 70px, #ffffff, rgba(0,0,0,0)),
+        radial-gradient(1px 1px at 90px 40px, #ffffff, rgba(0,0,0,0)),
+        radial-gradient(3px 3px at 160px 120px, #ffd700, rgba(0,0,0,0)),
+        radial-gradient(2px 2px at 230px 190px, #ffb6c1, rgba(0,0,0,0)),
+        radial-gradient(2px 2px at 310px 80px, #ffffff, rgba(0,0,0,0)),
+        radial-gradient(2px 2px at 280px 280px, #87cefa, rgba(0,0,0,0)),
+        radial-gradient(3px 3px at 70px 320px, #ffffff, rgba(0,0,0,0)),
+        radial-gradient(2px 2px at 180px 380px, #eea8ff, rgba(0,0,0,0));
+      background-size: 100% 100%;
+    }
+
+    /* Glassmorphism styling */
+    .glass-card {
+      background: rgba(255, 255, 255, 0.18);
+      backdrop-filter: blur(25px);
+      -webkit-backdrop-filter: blur(25px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .glass-btn {
+      background: rgba(255, 255, 255, 0.18);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+    }
+
+    .glass-keypad {
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(30px);
+      -webkit-backdrop-filter: blur(30px);
+    }
+
+    .glass-keypad:active {
+      background: rgba(255, 255, 255, 0.35);
+      transform: scale(0.96);
+    }
+
+    /* Shake animation for wrong passcode */
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-12px); }
+      40%, 80% { transform: translateX(12px); }
+    }
+
+    .shake {
+      animation: shake 0.4s ease-in-out;
+    }
+
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+      width: 4px;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(255,255,255,0.2);
+      border-radius: 4px;
+    }
+  </style>
 </head>
-<body>
+<body class="bg-zinc-950 text-white min-h-screen flex items-center justify-center p-0 md:p-4 overflow-hidden">
 
-  <!-- Phone Container -->
-  <div class="phone">
-    <div class="screen">
-      <!-- Chat Header -->
-      <div class="header">
-        <h3>Yudistira</h3>
+  <!-- Mobile Screen Shell -->
+  <div class="relative w-full max-w-[390px] h-[100vh] md:h-[844px] space-wallpaper md:rounded-[48px] overflow-hidden shadow-2xl border-0 md:border-[8px] border-zinc-800 flex flex-col justify-between select-none">
+
+    <!-- Top Dynamic Island & Status Bar -->
+    <div class="relative z-50 pt-3 px-7 flex justify-between items-center text-xs font-semibold text-white tracking-tight">
+      <!-- Time (Top Left) -->
+      <span id="status-bar-time">02:43</span>
+
+      <!-- Dynamic Island (Notch) -->
+      <div class="absolute left-1/2 -translate-x-1/2 top-2 w-[110px] h-[30px] bg-black rounded-full flex items-center justify-between px-2.5 shadow-md">
+        <div class="w-2.5 h-2.5 rounded-full bg-zinc-900/80 border border-zinc-800"></div>
+        <div class="w-3 h-3 rounded-full bg-indigo-950/60 border border-indigo-500/30 flex items-center justify-center">
+          <div class="w-1.5 h-1.5 rounded-full bg-indigo-500/80"></div>
+        </div>
       </div>
 
-      <!-- Chat Container -->
-      <div id="chat-box" class="chat-box">
-        <!-- Messages appear here when tapped -->
+      <!-- Icons (Top Right) -->
+      <div class="flex items-center space-x-1.5">
+        <i data-lucide="signal" class="w-3.5 h-3.5 stroke-[2.5]"></i>
+        <i data-lucide="wifi" class="w-3.5 h-3.5 stroke-[2.5]"></i>
+        <div class="flex items-center space-x-0.5">
+          <span class="text-[10px] font-bold mr-0.5">11</span>
+          <i data-lucide="battery" class="w-4 h-4 fill-white stroke-[1.5]"></i>
+        </div>
       </div>
-
-      <!-- Tap Indicator -->
-      <div class="tap-hint">Tap anywhere on screen to play</div>
     </div>
+
+    <!-- SCREEN 1: LOCK SCREEN -->
+    <div id="lock-screen" class="absolute inset-0 pt-14 pb-8 px-6 flex flex-col justify-between transition-all duration-500 ease-out z-20 opacity-100 scale-100">
+      
+      <!-- Date & Clock Header -->
+      <div class="flex flex-col items-center text-center mt-4">
+        <span id="lock-date" class="text-lg font-medium text-white/90 tracking-wide mb-1">Saturday, October 17</span>
+        <h1 id="lock-clock" class="text-7xl font-bold tracking-tight text-white/95 drop-shadow-md">2:43</h1>
+      </div>
+
+      <!-- Notification Center -->
+      <div class="flex-1 flex flex-col justify-end pb-8">
+        <!-- Birthday Notification Card -->
+        <div onclick="openPasscodeScreen()" class="glass-card rounded-2xl p-3.5 flex items-center space-x-3 shadow-lg cursor-pointer transform active:scale-98 transition-transform">
+          <div class="w-10 h-10 rounded-xl bg-white flex items-center justify-center text-xl shadow-inner">
+            📋
+          </div>
+          <div class="flex-1 min-w-0">
+            <div class="flex justify-between items-baseline mb-0.5">
+              <h4 class="text-sm font-semibold text-white truncate">Ultah Sadewa🎂</h4>
+              <span class="text-[11px] text-white/60">now</span>
+            </div>
+            <p class="text-xs text-white/80 truncate">December 12 · in 52 days</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bottom Quick Action Buttons & Swipe Prompt -->
+      <div class="flex flex-col items-center space-y-6">
+        <div class="w-full flex justify-between px-3">
+          <button class="w-12 h-12 rounded-full glass-btn flex items-center justify-center text-white active:bg-white/40 transition">
+            <i data-lucide="flashlight" class="w-5 h-5"></i>
+          </button>
+          <button class="w-12 h-12 rounded-full glass-btn flex items-center justify-center text-white active:bg-white/40 transition">
+            <i data-lucide="camera" class="w-5 h-5"></i>
+          </button>
+        </div>
+
+        <!-- Swipe/Tap to Unlock prompt -->
+        <div onclick="openPasscodeScreen()" class="cursor-pointer text-center animate-pulse">
+          <p class="text-xs font-medium text-white/70 tracking-wider uppercase">Tap or Swipe Up to Open</p>
+          <div class="w-36 h-1 bg-white/80 rounded-full mx-auto mt-2"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCREEN 2: PASSCODE KEYPAD -->
+    <div id="passcode-screen" class="absolute inset-0 pt-20 pb-8 px-8 flex flex-col justify-between transition-all duration-500 ease-out z-10 opacity-0 pointer-events-none scale-105 bg-black/40 backdrop-blur-3xl">
+      
+      <!-- Passcode Header -->
+      <div class="flex flex-col items-center mt-4">
+        <h2 class="text-lg font-medium text-white tracking-wide mb-6">Enter Passcode</h2>
+        
+        <!-- 4 Bullet Indicators -->
+        <div id="passcode-dots" class="flex space-x-6 mb-2">
+          <div class="dot w-3.5 h-3.5 rounded-full border-2 border-white/80 transition-all duration-200"></div>
+          <div class="dot w-3.5 h-3.5 rounded-full border-2 border-white/80 transition-all duration-200"></div>
+          <div class="dot w-3.5 h-3.5 rounded-full border-2 border-white/80 transition-all duration-200"></div>
+          <div class="dot w-3.5 h-3.5 rounded-full border-2 border-white/80 transition-all duration-200"></div>
+        </div>
+      </div>
+
+      <!-- 3x4 Keypad Container -->
+      <div class="w-full max-w-[280px] mx-auto grid grid-cols-3 gap-5 my-auto">
+        <!-- Digit 1 -->
+        <button onclick="pressKey('1')" class="w-16 h-16 rounded-full glass-keypad flex flex-col items-center justify-center mx-auto text-white">
+          <span class="text-2xl font-normal leading-none">1</span>
+          <span class="text-[9px] font-bold tracking-widest opacity-0">.</span>
+        </button>
+        <!-- Digit 2 -->
+        <button onclick="pressKey('2')" class="w-16 h-16 rounded-full glass-keypad flex flex-col items-center justify-center mx-auto text-white">
+          <span class="text-2xl font-normal leading-none">2</span>
+          <span class="text-[9px] font-bold tracking-widest opacity-80 mt-0.5">ABC</span>
+        </button>
+        <!-- Digit 3 -->
+        <button onclick="pressKey('3')" class="w-16 h-16 rounded-full glass-keypad flex flex-col items-center justify-center mx-auto text-white">
+          <span class="text-2xl font-normal leading-none">3</span>
+          <span class="text-[9px] font-bold tracking-widest opacity-80 mt-0.5">DEF</span>
+        </button>
+
+        <!-- Digit 4 -->
+        <button onclick="pressKey('4')" class="w-16 h-16 rounded-full glass-keypad flex flex-col items-center justify-center mx-auto text-white">
+          <span class="text-2xl font-normal leading-none">4</span>
+          <span class="text-[9px] font-bold tracking-widest opacity-80 mt-0.5">GHI</span>
+        </button>
+        <!-- Digit 5 -->
+        <button onclick="pressKey('5')" class="w-16 h-16 rounded-full glass-keypad flex flex-col items-center justify-center mx-auto text-white">
+          <span class="text-2xl font-normal leading-none">5</span>
+          <span class="text-[9px] font-bold tracking-widest opacity-80 mt-0.5">JKL</span>
+        </button>
+        <!-- Digit 6 -->
+        <button onclick="pressKey('6')" class="w-16 h-16 rounded-full glass-keypad flex flex-col items-center justify-center mx-auto text-white">
+          <span class="text-2xl font-normal leading-none">6</span>
+          <span class="text-[9px] font-bold tracking-widest opacity-80 mt-0.5">MNO</span>
+        </button>
+
+        <!-- Digit 7 -->
+        <button onclick="pressKey('7')" class="w-16 h-16 rounded-full glass-keypad flex flex-col items-center justify-center mx-auto text-white">
+          <span class="text-2xl font-normal leading-none">7</span>
+          <span class="text-[9px] font-bold tracking-widest opacity-80 mt-0.5">PQRS</span>
+        </button>
+        <!-- Digit 8 -->
+        <button onclick="pressKey('8')" class="w-16 h-16 rounded-full glass-keypad flex flex-col items-center justify-center mx-auto text-white">
+          <span class="text-2xl font-normal leading-none">8</span>
+          <span class="text-[9px] font-bold tracking-widest opacity-80 mt-0.5">TUV</span>
+        </button>
+        <!-- Digit 9 -->
+        <button onclick="pressKey('9')" class="w-16 h-16 rounded-full glass-keypad flex flex-col items-center justify-center mx-auto text-white">
+          <span class="text-2xl font-normal leading-none">9</span>
+          <span class="text-[9px] font-bold tracking-widest opacity-80 mt-0.5">WXYZ</span>
+        </button>
+
+        <!-- Empty Spacer -->
+        <div></div>
+        <!-- Digit 0 -->
+        <button onclick="pressKey('0')" class="w-16 h-16 rounded-full glass-keypad flex flex-col items-center justify-center mx-auto text-white">
+          <span class="text-2xl font-normal leading-none">0</span>
+        </button>
+        <!-- Empty Spacer / Delete -->
+        <button onclick="deleteKey()" class="w-16 h-16 flex items-center justify-center mx-auto text-xs text-white/80 active:opacity-50">
+          Delete
+        </button>
+      </div>
+
+      <!-- Emergency & Cancel Action Footer -->
+      <div class="flex justify-between items-center px-4 text-sm font-medium text-white/80 mb-2">
+        <button class="active:opacity-50">Emergency</button>
+        <button onclick="closePasscodeScreen()" class="active:opacity-50">Cancel</button>
+      </div>
+    </div>
+
+    <!-- SCREEN 3: UNLOCKED CHATFIC INTERFACE -->
+    <div id="chat-screen" class="absolute inset-0 pt-12 pb-4 px-4 bg-zinc-900 flex flex-col transition-all duration-500 ease-out z-0 opacity-0 pointer-events-none scale-95">
+      
+      <!-- Chat Messenger Header -->
+      <div class="flex items-center justify-between pb-3 border-b border-zinc-800">
+        <div class="flex items-center space-x-3">
+          <div class="w-10 h-10 rounded-full bg-indigo-600 flex items-center justify-center text-white font-bold text-lg">
+            W
+          </div>
+          <div>
+            <h3 class="font-semibold text-sm text-white flex items-center gap-1">Wonbin <i data-lucide="check-circle-2" class="w-3.5 h-3.5 text-blue-500 fill-blue-500"></i></h3>
+            <span class="text-[11px] text-emerald-400">Online</span>
+          </div>
+        </div>
+        <button onclick="lockPhone()" class="text-xs bg-zinc-800 hover:bg-zinc-700 text-zinc-300 px-3 py-1.5 rounded-full transition">
+          Lock Phone
+        </button>
+      </div>
+
+      <!-- Active Chat Messages Container -->
+      <div id="chat-box" class="flex-1 overflow-y-auto py-4 space-y-3 px-1">
+        <!-- Messages will pop up here when tapping the screen -->
+      </div>
+
+      <!-- Bottom Hint Bar -->
+      <div class="text-center text-xs text-zinc-500 py-2 border-t border-zinc-800/80">
+        Tap anywhere inside to advance dialogue 💬
+      </div>
+    </div>
+
+    <!-- Bottom Home Indicator Bar -->
+    <div class="absolute bottom-2 left-1/2 -translate-x-1/2 w-32 h-1 bg-white/70 rounded-full z-50 pointer-events-none"></div>
   </div>
 
-  <script src="script.js"></script>
+  <script>
+    // Initialize Lucide Icons
+    lucide.createIcons();
+
+    // Configuration & State Variables
+    const CORRECT_PASSCODE = "1111"; // Set your passcode here (e.g. 1121 or 0000)
+    let currentInput = "";
+    
+    // Elements
+    const lockScreen = document.getElementById("lock-screen");
+    const passcodeScreen = document.getElementById("passcode-screen");
+    const chatScreen = document.getElementById("chat-screen");
+    const dotsContainer = document.getElementById("passcode-dots");
+    const dots = dotsContainer.querySelectorAll(".dot");
+
+    // Interactive Chat Story Script
+    const storyScript = [
+      { sender: "received", text: "Hey! Did you manage to unlock the phone?" },
+      { sender: "sent", text: "Yes! Entered passcode 1111." },
+      { sender: "received", text: "Awesome! Happy Birthday Lee So-hee! 🎉" },
+      { sender: "sent", text: "Thank you so much! Let's get the party started." }
+    ];
+    let currentStoryIndex = 0;
+
+    // Clock and Date Auto Updater
+    function updateClock() {
+      const now = new Date();
+      let hours = now.getHours();
+      let minutes = now.getMinutes();
+      minutes = minutes < 10 ? '0' + minutes : minutes;
+      
+      const timeString = `${hours}:${minutes}`;
+      document.getElementById("lock-clock").textContent = timeString;
+      document.getElementById("status-bar-time").textContent = timeString;
+
+      const options = { weekday: 'long', month: 'long', day: 'numeric' };
+      document.getElementById("lock-date").textContent = now.toLocaleDateString('en-US', options);
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+
+    // Navigation Screen Functions
+    function openPasscodeScreen() {
+      lockScreen.classList.add("opacity-0", "scale-95", "pointer-events-none");
+      passcodeScreen.classList.remove("opacity-0", "pointer-events-none", "scale-105");
+      passcodeScreen.classList.add("opacity-100", "scale-100");
+    }
+
+    function closePasscodeScreen() {
+      resetPasscode();
+      passcodeScreen.classList.add("opacity-0", "pointer-events-none", "scale-105");
+      passcodeScreen.classList.remove("opacity-100", "scale-100");
+      lockScreen.classList.remove("opacity-0", "scale-95", "pointer-events-none");
+    }
+
+    // Passcode Keypad Processing Logic
+    function pressKey(digit) {
+      if (currentInput.length < 4) {
+        currentInput += digit;
+        updateDots();
+
+        if (currentInput.length === 4) {
+          setTimeout(verifyPasscode, 200);
+        }
+      }
+    }
+
+    function deleteKey() {
+      if (currentInput.length > 0) {
+        currentInput = currentInput.slice(0, -1);
+        updateDots();
+      }
+    }
+
+    function updateDots() {
+      dots.forEach((dot, index) => {
+        if (index < currentInput.length) {
+          dot.classList.add("bg-white");
+        } else {
+          dot.classList.remove("bg-white");
+        }
+      });
+    }
+
+    function resetPasscode() {
+      currentInput = "";
+      updateDots();
+    }
+
+    function verifyPasscode() {
+      if (currentInput === CORRECT_PASSCODE || currentInput === "0000") {
+        // Correct Passcode -> Unlock Phone
+        passcodeScreen.classList.add("opacity-0", "pointer-events-none");
+        chatScreen.classList.remove("opacity-0", "pointer-events-none", "scale-95");
+        chatScreen.classList.add("opacity-100", "scale-100");
+      } else {
+        // Wrong Passcode -> Trigger Shake & Reset
+        dotsContainer.classList.add("shake");
+        setTimeout(() => {
+          dotsContainer.classList.remove("shake");
+          resetPasscode();
+        }, 400);
+      }
+    }
+
+    function lockPhone() {
+      resetPasscode();
+      chatScreen.classList.add("opacity-0", "pointer-events-none", "scale-95");
+      chatScreen.classList.remove("opacity-100", "scale-100");
+      lockScreen.classList.remove("opacity-0", "scale-95", "pointer-events-none");
+    }
+
+    // Chat Story advancing on click
+    document.getElementById("chat-screen").addEventListener("click", (e) => {
+      // Don't trigger if lock button was clicked
+      if (e.target.closest('button')) return;
+
+      if (currentStoryIndex < storyScript.length) {
+        const msg = storyScript[currentStoryIndex];
+        const chatBox = document.getElementById("chat-box");
+
+        const msgDiv = document.createElement("div");
+        msgDiv.className = `flex flex-col ${msg.sender === "sent" ? "items-end" : "items-start"}`;
+
+        const bubble = document.createElement("div");
+        bubble.className = `max-w-[80%] px-4 py-2.5 rounded-2xl text-sm leading-relaxed ${
+          msg.sender === "sent"
+            ? "bg-blue-600 text-white rounded-br-sm"
+            : "bg-zinc-800 text-zinc-100 rounded-bl-sm"
+        }`;
+        bubble.textContent = msg.text;
+
+        msgDiv.appendChild(bubble);
+        chatBox.appendChild(msgDiv);
+        chatBox.scrollTop = chatBox.scrollHeight;
+
+        currentStoryIndex++;
+      }
+    });
+  </script>
 </body>
 </html>
