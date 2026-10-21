@@ -535,7 +535,6 @@
       box-shadow: 0 1px 1px rgba(0,0,0,0.2);
     }
 
-    /* Generic Generic Mock App Screen Styling */
     .generic-app {
       background-color: #000;
       z-index: 30;
@@ -724,15 +723,70 @@
         <span style="color: #53bdeb; font-size: 16px; cursor: pointer;" onclick="goHome()">Home</span>
       </div>
       <div class="chat-list">
-        <!-- Nakula Chat (Unread / Top) -->
-        <div class="chat-item" onclick="openChatRoom()">
+        <!-- Nakula (Main Chat) -->
+        <div class="chat-item" onclick="openChatRoom('nakula')">
           <div class="chat-avatar" style="background: #00a884;">N</div>
           <div class="chat-info">
             <div class="chat-name-row">
               <span class="chat-name">Nakula</span>
-              <span class="chat-time" style="color: #00a884;">10:00 AM</span>
+              <span class="chat-time" style="color: #00a884;">10:01 AM</span>
             </div>
-            <div class="chat-preview" style="color: #fff; font-weight: 500;">Jun, Lo lagi diluar ya?...</div>
+            <div class="chat-preview" style="color: #fff; font-weight: 500;">ga perlu na... Nanti aku tanya aja...</div>
+          </div>
+        </div>
+        <!-- Yudistira -->
+        <div class="chat-item" onclick="openChatRoom('yudistira')">
+          <div class="chat-avatar" style="background: #00a884;">Y</div>
+          <div class="chat-info">
+            <div class="chat-name-row">
+              <span class="chat-name">Yudistira</span>
+              <span class="chat-time">Yesterday</span>
+            </div>
+            <div class="chat-preview">whataever</div>
+          </div>
+        </div>
+        <!-- Sadewa -->
+        <div class="chat-item" onclick="openChatRoom('sadewa')">
+          <div class="chat-avatar" style="background: #00a884;">S</div>
+          <div class="chat-info">
+            <div class="chat-name-row">
+              <span class="chat-name">Sadewa</span>
+              <span class="chat-time">Friday</span>
+            </div>
+            <div class="chat-preview">Ntar dikabari ya dew</div>
+          </div>
+        </div>
+        <!-- Bima -->
+        <div class="chat-item" onclick="openChatRoom('bima')">
+          <div class="chat-avatar" style="background: #00a884;">B</div>
+          <div class="chat-info">
+            <div class="chat-name-row">
+              <span class="chat-name">Bima</span>
+              <span class="chat-time">Thursday</span>
+            </div>
+            <div class="chat-preview">Mantap bim,thanks infonya</div>
+          </div>
+        </div>
+        <!-- Aya -->
+        <div class="chat-item" onclick="openChatRoom('aya')">
+          <div class="chat-avatar" style="background: #00a884;">A</div>
+          <div class="chat-info">
+            <div class="chat-name-row">
+              <span class="chat-name">Aya</span>
+              <span class="chat-time">Wednesday</span>
+            </div>
+            <div class="chat-preview">Iya siap</div>
+          </div>
+        </div>
+        <!-- Naia -->
+        <div class="chat-item" onclick="openChatRoom('naia')">
+          <div class="chat-avatar" style="background: #00a884;">N</div>
+          <div class="chat-info">
+            <div class="chat-name-row">
+              <span class="chat-name">Naia</span>
+              <span class="chat-time">Monday</span>
+            </div>
+            <div class="chat-preview">Sama-sama Naia</div>
           </div>
         </div>
       </div>
@@ -742,8 +796,8 @@
     <div id="chat-room-screen" class="screen-view app-container hidden">
       <div class="room-header">
         <button class="back-btn" onclick="openChatApp()">‹ Chats</button>
-        <div style="width: 36px; height: 36px; border-radius: 50%; background: #00a884; display: flex; justify-content: center; align-items: center; font-weight: bold; font-size: 14px; color: white;">N</div>
-        <span style="font-weight: 600; font-size: 16px; flex: 1; color: #e9edef;">Nakula</span>
+        <div id="room-avatar" style="width: 36px; height: 36px; border-radius: 50%; background: #00a884; display: flex; justify-content: center; align-items: center; font-weight: bold; font-size: 14px; color: white;">N</div>
+        <span id="room-name" style="font-weight: 600; font-size: 16px; flex: 1; color: #e9edef;">Nakula</span>
         <span style="color: #53bdeb; font-size: 14px; cursor: pointer;" onclick="goHome()">Home</span>
       </div>
       <div id="room-body" class="room-body" onclick="nextChatMessage()">
@@ -761,7 +815,6 @@
         <span style="color: #007aff; font-size: 16px; cursor: pointer;" onclick="goHome()">Home</span>
       </div>
       <div id="mock-app-content" style="flex: 1; color: #aaa; font-size: 14px; padding-top: 20px;">
-        <!-- Konten dinamis aplikasi -->
       </div>
     </div>
 
@@ -770,24 +823,79 @@
   <script>
     const CORRECT_PASSCODE = "1709"; 
     let currentInput = "";
+    let activeChatKey = "nakula";
     let chatIndex = 0;
-    
-    const yesterdayMessages = [
-      { sender: "received", text: "Jun, besok jam 10 kumpul ya", time: "21:10" },
-      { sender: "sent", text: "Aman, kabari aja", time: "21:11" }
-    ];
 
-    const todayMessages = [
-      { sender: "received", text: "Jun, Lo lagi diluar ya? Kok sombong amat ga negur aku Ama dewa?", time: "09:55" },
-      { sender: "sent", text: "hah? Mana ada gue lagi malas malasan di kosan kocak", time: "09:56" },
-      { sender: "received", text: "hah? Boong lu? Terus yang sama Yudistira siapa kocak?", time: "09:57" },
-      { sender: "sent", text: "na, serius gue ga keluar sama Yudis hari ini... Dia bilang dia sibuk sama kerjaan mixing nya...", time: "09:58" },
-      { sender: "received", text: "....", time: "09:59" },
-      { sender: "received", text: "jun, ini ya..", time: "09:59" },
-      { sender: "received", type: "image", url: "989666086889176436.jpg", time: "10:00" },
-      { sender: "received", text: "mw aku samperin ga mereka? Dewa juga mau nyamperin nih, mau hantam sih Yudistira.", time: "10:00" },
-      { sender: "sent", text: "ga perlu na... Nanti aku tanya aja...", time: "10:01" }
-    ];
+    // Database room chat
+    const chatRoomsData = {
+      nakula: {
+        name: "Nakula",
+        initial: "N",
+        yesterdayMessages: [
+          { sender: "received", text: "Jun, besok jam 10 kumpul ya", time: "21:10" },
+          { sender: "sent", text: "Aman, kabari aja", time: "21:11" }
+        ],
+        todayMessages: [
+          { sender: "received", text: "Jun, Lo lagi diluar ya? Kok sombong amat ga negur aku Ama dewa?", time: "09:55" },
+          { sender: "sent", text: "hah? Mana ada gue lagi malas malasan di kosan kocak", time: "09:56" },
+          { sender: "received", text: "hah? Boong lu? Terus yang sama Yudistira siapa kocak?", time: "09:57" },
+          { sender: "sent", text: "na, serius gue ga keluar sama Yudis hari ini... Dia bilang dia sibuk sama kerjaan mixing nya...", time: "09:58" },
+          { sender: "received", text: "....", time: "09:59" },
+          { sender: "received", text: "jun, ini ya..", time: "09:59" },
+          { sender: "received", type: "image", url: "989666086889176436.jpg", time: "10:00" },
+          { sender: "received", text: "mw aku samperin ga mereka? Dewa juga mau nyamperin nih, mau hantam sih Yudistira.", time: "10:00" },
+          { sender: "sent", text: "ga perlu na... Nanti aku tanya aja...", time: "10:01" }
+        ]
+      },
+      yudistira: {
+        name: "Yudistira",
+        initial: "Y",
+        yesterdayMessages: [
+          { sender: "received", text: "meng besok aku busy sama kerjaan yaa", time: "20:00" },
+          { sender: "received", text: "kamu nanti duduk di rumah aja ya rehat", time: "20:01" },
+          { sender: "sent", text: "lah ngatur suka suka gue lah mau tidur apa rehat apa keluar kek", time: "20:02" },
+          { sender: "received", text: "yahhh ga ngatur cuman mau kamu rehat aja junaaaa", time: "20:03" },
+          { sender: "sent", text: "whataever", time: "20:04" }
+        ],
+        todayMessages: []
+      },
+      sadewa: {
+        name: "Sadewa",
+        initial: "S",
+        yesterdayMessages: [
+          { sender: "received", text: "Jun, jadi ikut kumpul ga?", time: "19:00" },
+          { sender: "sent", text: "Ntar dikabari ya dew", time: "19:05" }
+        ],
+        todayMessages: []
+      },
+      bima: {
+        name: "Bima",
+        initial: "B",
+        yesterdayMessages: [
+          { sender: "received", text: "Peminjaman ruangan udah beres ya", time: "14:20" },
+          { sender: "sent", text: "Mantap bim,thanks infonya", time: "14:25" }
+        ],
+        todayMessages: []
+      },
+      aya: {
+        name: "Aya",
+        initial: "A",
+        yesterdayMessages: [
+          { sender: "received", text: "Bang Junaa, besok jan lupa beliin manya wet food", time: "16:00" },
+          { sender: "sent", text: "Iya siap", time: "16:05" }
+        ],
+        todayMessages: []
+      },
+      naia: {
+        name: "Naia",
+        initial: "N",
+        yesterdayMessages: [
+          { sender: "received", text: "Makasih ya Jun catatan kuliahnya", time: "11:10" },
+          { sender: "sent", text: "Sama-sama Naia", time: "11:15" }
+        ],
+        todayMessages: []
+      }
+    };
 
     function showPasscodeView() {
       document.getElementById('lock-screen').classList.add('hidden');
@@ -847,29 +955,69 @@
       document.getElementById('chat-list-screen').classList.remove('hidden');
     }
 
-    function openChatRoom() {
+    function openChatRoom(chatKey) {
+      activeChatKey = chatKey || 'nakula';
+      chatIndex = 0;
+      
+      const chatData = chatRoomsData[activeChatKey];
+      document.getElementById('room-name').textContent = chatData.name;
+      document.getElementById('room-avatar').textContent = chatData.initial;
+
       document.getElementById('chat-list-screen').classList.add('hidden');
       document.getElementById('chat-room-screen').classList.remove('hidden');
       
       const roomBody = document.getElementById('room-body');
-      if (roomBody.children.length === 0) {
-        yesterdayMessages.forEach(msg => {
-          const bubble = document.createElement('div');
-          bubble.className = `msg ${msg.sender}`;
-          bubble.innerHTML = `${msg.text}<span class="msg-time">${msg.time} ${msg.sender === 'sent' ? '✓✓' : ''}</span>`;
-          roomBody.appendChild(bubble);
+      roomBody.innerHTML = '';
+
+      // Tampilkan pesan kemarin jika ada
+      if (chatData.yesterdayMessages && chatData.yesterdayMessages.length > 0) {
+        chatData.yesterdayMessages.forEach(msg => {
+          renderMessage(msg, roomBody);
         });
 
-        const divider = document.createElement('div');
-        divider.className = 'date-divider';
-        divider.textContent = 'Today';
-        roomBody.appendChild(divider);
+        // Tampilkan garis pembatas "Today" jika ada pesan hari ini
+        if (chatData.todayMessages && chatData.todayMessages.length > 0) {
+          const divider = document.createElement('div');
+          divider.className = 'date-divider';
+          divider.textContent = 'Today';
+          roomBody.appendChild(divider);
+        }
+      }
 
+      // Jika ruang chat tidak menggunakan tap-to-next (seperti kontak lain), tampilkan langsung
+      if (!chatData.todayMessages || chatData.todayMessages.length === 0) {
+        roomBody.scrollTop = roomBody.scrollHeight;
+      } else {
         roomBody.scrollTop = roomBody.scrollHeight;
       }
     }
 
-    // Fungsi universal untuk membuka halaman aplikasi lainnya
+    function renderMessage(msg, container) {
+      const bubble = document.createElement('div');
+      bubble.className = `msg ${msg.sender}`;
+      
+      if (msg.type === 'image') {
+        bubble.innerHTML = `<img src="${msg.url}" class="msg-image" alt="${msg.url}" onerror="this.outerHTML='[Foto: ${msg.url}]'" /><span class="msg-time">${msg.time}</span>`;
+      } else {
+        bubble.innerHTML = `${msg.text}<span class="msg-time">${msg.time} ${msg.sender === 'sent' ? '✓✓' : ''}</span>`;
+      }
+
+      container.appendChild(bubble);
+    }
+
+    function nextChatMessage() {
+      const chatData = chatRoomsData[activeChatKey];
+      if (chatData.todayMessages && chatIndex < chatData.todayMessages.length) {
+        const msg = chatData.todayMessages[chatIndex];
+        const roomBody = document.getElementById('room-body');
+
+        renderMessage(msg, roomBody);
+
+        roomBody.scrollTop = roomBody.scrollHeight;
+        chatIndex++;
+      }
+    }
+
     function openMockApp(appName) {
       document.getElementById('home-screen').classList.add('hidden');
       const mockScreen = document.getElementById('mock-app-screen');
@@ -879,7 +1027,6 @@
       mockScreen.classList.remove('hidden');
       titleEl.textContent = appName;
 
-      // Isi konten sesuai aplikasi yang diklik
       if (appName === 'Notes') {
         contentEl.innerHTML = `<h3>Catatan Kosan</h3><p style="margin-top:10px; color:#ddd;">Hint Passcode: 1709 (ingat tanggal penting).</p>`;
       } else if (appName === 'Weather') {
@@ -890,26 +1037,6 @@
         contentEl.innerHTML = `<h3>Pengaturan</h3><p style="margin-top:10px; color:#ddd;">• Mode Gelap: Aktif</p><p style="color:#ddd;">• Notifikasi: Izinkan</p>`;
       } else {
         contentEl.innerHTML = `<p>Simulasi halaman untuk aplikasi <b>${appName}</b>.</p>`;
-      }
-    }
-
-    function nextChatMessage() {
-      if (chatIndex < todayMessages.length) {
-        const msg = todayMessages[chatIndex];
-        const roomBody = document.getElementById('room-body');
-
-        const bubble = document.createElement('div');
-        bubble.className = `msg ${msg.sender}`;
-        
-        if (msg.type === 'image') {
-          bubble.innerHTML = `<img src="${msg.url}" class="msg-image" alt="989666086889176436.jpg" onerror="this.outerHTML='[Foto: 989666086889176436.jpg]'" /><span class="msg-time">${msg.time}</span>`;
-        } else {
-          bubble.innerHTML = `${msg.text}<span class="msg-time">${msg.time} ${msg.sender === 'sent' ? '✓✓' : ''}</span>`;
-        }
-
-        roomBody.appendChild(bubble);
-        roomBody.scrollTop = roomBody.scrollHeight;
-        chatIndex++;
       }
     }
   </script>
