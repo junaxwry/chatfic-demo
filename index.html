@@ -343,31 +343,33 @@
       height: 56px;
     }
 
-    /* ---------------- 4. CHAT APP STYLES ---------------- */
+    /* ---------------- 4. WHATSAPP STYLES ---------------- */
     .app-container {
-      background-color: #121212;
+      background-color: #111b21;
       z-index: 25;
+      color: #e9edef;
     }
 
     .app-header {
-      background: #1e1e1e;
+      background: #202c33;
       padding: 14px 16px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      border-bottom: 1px solid #2a2a2a;
+      border-bottom: 1px solid #222d34;
       margin-top: 32px;
     }
 
     .app-title {
       font-size: 22px;
       font-weight: bold;
+      color: #e9edef;
     }
 
     .chat-list {
       flex: 1;
       overflow-y: auto;
-      background: #121212;
+      background: #111b21;
     }
 
     .chat-item {
@@ -375,19 +377,19 @@
       align-items: center;
       padding: 12px 16px;
       gap: 14px;
-      border-bottom: 1px solid #1a1a1a;
+      border-bottom: 1px solid #222d34;
       cursor: pointer;
     }
 
     .chat-item:active {
-      background: #252525;
+      background: #202c33;
     }
 
     .chat-avatar {
       width: 48px;
       height: 48px;
       border-radius: 50%;
-      background: #444;
+      background: #00a884;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -409,37 +411,38 @@
     .chat-name {
       font-size: 15px;
       font-weight: 600;
+      color: #e9edef;
     }
 
     .chat-time {
       font-size: 12px;
-      color: #8e8e93;
+      color: #8696a0;
     }
 
     .chat-preview {
       font-size: 13px;
-      color: #8e8e93;
+      color: #8696a0;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
       max-width: 240px;
     }
 
-    /* Chat Room */
+    /* WhatsApp Chat Room */
     .room-header {
-      background: #1e1e1e;
+      background: #202c33;
       padding: 12px 16px;
       display: flex;
       align-items: center;
       gap: 12px;
-      border-bottom: 1px solid #2a2a2a;
+      border-bottom: 1px solid #222d34;
       margin-top: 32px;
     }
 
     .back-btn {
       background: none;
       border: none;
-      color: #007aff;
+      color: #53bdeb;
       font-size: 16px;
       cursor: pointer;
       font-weight: 500;
@@ -451,36 +454,50 @@
       overflow-y: auto;
       display: flex;
       flex-direction: column;
-      gap: 10px;
-      background: #000000;
+      gap: 8px;
+      background-color: #0b141a;
+      background-image: radial-gradient(rgba(255,255,255,0.03) 1px, transparent 1px);
+      background-size: 20px 20px;
     }
 
     .msg {
-      max-width: 75%;
-      padding: 10px 14px;
-      border-radius: 16px;
+      max-width: 80%;
+      padding: 8px 12px;
+      border-radius: 8px;
       font-size: 14px;
       line-height: 1.4;
       word-wrap: break-word;
+      position: relative;
     }
 
     .msg.received {
-      background-color: #2c2c2e;
-      color: #ffffff;
+      background-color: #202c33;
+      color: #e9edef;
       align-self: flex-start;
-      border-bottom-left-radius: 4px;
+      border-top-left-radius: 0px;
     }
 
     .msg.sent {
-      background-color: #0a84ff;
-      color: #ffffff;
+      background-color: #005c4b;
+      color: #e9edef;
       align-self: flex-end;
-      border-bottom-right-radius: 4px;
+      border-top-right-radius: 0px;
+    }
+
+    .msg-time {
+      font-size: 10px;
+      color: #8696a0;
+      float: right;
+      margin-left: 8px;
+      margin-top: 4px;
+      display: flex;
+      align-items: center;
+      gap: 2px;
     }
 
     .room-footer {
-      padding: 12px 16px;
-      background: #1e1e1e;
+      padding: 10px 16px;
+      background: #202c33;
       display: flex;
       align-items: center;
       gap: 10px;
@@ -489,11 +506,11 @@
 
     .tap-prompt {
       flex: 1;
-      background: #2c2c2e;
+      background: #2a3942;
       border: none;
       padding: 10px 16px;
-      border-radius: 20px;
-      color: #8e8e93;
+      border-radius: 8px;
+      color: #8696a0;
       font-size: 14px;
       text-align: left;
     }
@@ -501,8 +518,13 @@
     .date-divider {
       text-align: center;
       font-size: 11px;
-      color: #8e8e93;
+      background-color: #182229;
+      color: #8696a0;
+      padding: 5px 12px;
+      border-radius: 6px;
+      align-self: center;
       margin: 10px 0;
+      box-shadow: 0 1px 1px rgba(0,0,0,0.2);
     }
   </style>
 </head>
@@ -520,7 +542,7 @@
 
         <div class="notification-card">
           <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
-            <div style="width: 18px; height: 18px; background: #ffcc00; border-radius: 4px; display: flex; justify-content: center; align-items: center; font-size: 10px;">💬</div>
+            <div style="width: 18px; height: 18px; background: #25d366; border-radius: 4px; display: flex; justify-content: center; align-items: center; font-size: 10px; color: white;">💬</div>
             <span style="font-size: 13px; font-weight: 600; flex: 1; opacity: 0.85;">Yudistira</span>
             <span style="font-size: 11px; opacity: 0.6;">now</span>
           </div>
@@ -656,9 +678,10 @@
             <svg viewBox="0 0 24 24"><path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm3.504 15.655l-3.32-1.503-1.503-3.32 3.32 1.503 1.503 3.32zm3.176-9.155l-5.68 1.953-1.953 5.68-3.747-3.747 3.747-3.747 5.68 1.953z"/></svg>
           </div>
         </div>
+        <!-- WhatsApp Icon in Dock -->
         <div class="app-icon" onclick="openChatApp()">
-          <div class="app-box" style="background: #ffcc00; color: #000;">
-            <svg viewBox="0 0 24 24" style="fill: #000000;"><path d="M12 3c-4.97 0-9 3.58-9 8 0 2.22 1.01 4.25 2.65 5.75-.15.82-.72 2.97-.83 3.42-.23.95.73 1.7 1.62 1.24 1.08-.55 3.09-1.63 3.86-2.02.58.11 1.19.16 1.8 .16 4.97 0 9-3.58 9-8s-4.03-8-9-8z"/></svg>
+          <div class="app-box" style="background: #25d366;">
+            <svg viewBox="0 0 24 24" style="fill: #ffffff;"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
           </div>
         </div>
         <div class="app-icon" onclick="alert('Music App')">
@@ -669,27 +692,27 @@
       </div>
     </div>
 
-    <!-- ================= 2. CHAT APP LIST ================= -->
+    <!-- ================= 2. WHATSAPP CHAT LIST ================= -->
     <div id="chat-list-screen" class="screen-view app-container hidden">
       <div class="app-header">
         <span class="app-title">Chats</span>
-        <span style="color: #007aff; font-size: 16px; cursor: pointer;" onclick="goHome()">Home</span>
+        <span style="color: #53bdeb; font-size: 16px; cursor: pointer;" onclick="goHome()">Home</span>
       </div>
       <div class="chat-list">
         <!-- Yudistira Chat (Unread / Top) -->
         <div class="chat-item" onclick="openChatRoom()">
-          <div class="chat-avatar" style="background: #ff9500;">Y</div>
+          <div class="chat-avatar" style="background: #00a884;">Y</div>
           <div class="chat-info">
             <div class="chat-name-row">
               <span class="chat-name">Yudistira</span>
-              <span class="chat-time" style="color: #007aff;">10:00 AM</span>
+              <span class="chat-time" style="color: #00a884;">10:00 AM</span>
             </div>
             <div class="chat-preview" style="color: #fff; font-weight: 500;">Jun</div>
           </div>
         </div>
         <!-- Other Chats -->
         <div class="chat-item" onclick="alert('Chat with Aya')">
-          <div class="chat-avatar" style="background: #34c759;">M</div>
+          <div class="chat-avatar" style="background: #00a884;">M</div>
           <div class="chat-info">
             <div class="chat-name-row">
               <span class="chat-name">Aya</span>
@@ -698,8 +721,8 @@
             <div class="chat-preview">Bang Junaa, besok jan lupa beliin manya wet food</div>
           </div>
         </div>
-        <div class="chat-item" onclick="alert('Chat with Yudistira')">
-          <div class="chat-avatar" style="background: #007aff;">L</div>
+        <div class="chat-item" onclick="alert('Chat with Nakula')">
+          <div class="chat-avatar" style="background: #00a884;">N</div>
           <div class="chat-info">
             <div class="chat-name-row">
               <span class="chat-name">Nakula</span>
@@ -711,18 +734,19 @@
       </div>
     </div>
 
-    <!-- ================= 3. INDIVIDUAL CHAT ROOM ================= -->
+    <!-- ================= 3. WHATSAPP CHAT ROOM ================= -->
     <div id="chat-room-screen" class="screen-view app-container hidden">
       <div class="room-header">
         <button class="back-btn" onclick="openChatApp()">‹ Chats</button>
-        <span style="font-weight: 600; font-size: 16px; flex: 1;">Yudistira</span>
-        <span style="color: #007aff; font-size: 14px; cursor: pointer;" onclick="goHome()">Home</span>
+        <div style="width: 36px; height: 36px; border-radius: 50%; background: #00a884; display: flex; justify-content: center; align-items: center; font-weight: bold; font-size: 14px; color: white;">Y</div>
+        <span style="font-weight: 600; font-size: 16px; flex: 1; color: #e9edef;">Yudistira</span>
+        <span style="color: #53bdeb; font-size: 14px; cursor: pointer;" onclick="goHome()">Home</span>
       </div>
       <div id="room-body" class="room-body" onclick="nextChatMessage()">
-        <!-- Yesterday's messages rendered automatically here -->
+        <!-- Messages loaded here -->
       </div>
       <div class="room-footer" onclick="nextChatMessage()">
-        <div class="tap-prompt">Ketuk layar untuk balas pesan...</div>
+        <div class="tap-prompt">Ketik pesan... (Ketuk untuk lanjut)</div>
       </div>
     </div>
 
@@ -733,23 +757,22 @@
     let currentInput = "";
     let chatIndex = 0;
     
-    // Split messages into "yesterday" (already loaded) and "today" (tapped)
     const yesterdayMessages = [
-      { sender: "received", text: "junaaaaa" },
-      { sender: "sent", text: "kenapa dis" },
-      { sender: "received", text: "kangen, ayo keluar" },
-      { sender: "sent", text: "gmw ah, mager gue" },
-      { sender: "received", text: ":((( hayolo temenin aku makan coba" },
-      { sender: "sent", text: "iya iya apasih jemput cepat" },
-      { sender: "received", text: "yeyyy otiwiiii" }
+      { sender: "received", text: "junaaaaa", time: "21:10" },
+      { sender: "sent", text: "kenapa dis", time: "21:11" },
+      { sender: "received", text: "kangen, ayo keluar", time: "21:12" },
+      { sender: "sent", text: "gmw ah, mager gue", time: "21:12" },
+      { sender: "received", text: ":((( hayolo temenin aku makan coba", time: "21:13" },
+      { sender: "sent", text: "iya iya apasih jemput cepat", time: "21:14" },
+      { sender: "received", text: "yeyyy otiwiiii", time: "21:15" }
     ];
 
     const todayMessages = [
-      { sender: "received", text: "Jun" },
-      { sender: "sent", text: "kenapa dis?" },
-      { sender: "received", text: "ada hal yang kita perlu omongin" },
-      { sender: "sent", text: "apa tuh?" },
-      { sender: "received", text: "Aku suka kamu." }
+      { sender: "received", text: "Jun", time: "09:58" },
+      { sender: "sent", text: "kenapa dis?", time: "09:59" },
+      { sender: "received", text: "ada hal yang kita perlu omongin", time: "09:59" },
+      { sender: "sent", text: "apa tuh?", time: "10:00" },
+      { sender: "received", text: "Aku suka kamu.", time: "10:00" }
     ];
 
     function showPasscodeView() {
@@ -813,17 +836,15 @@
       document.getElementById('chat-list-screen').classList.add('hidden');
       document.getElementById('chat-room-screen').classList.remove('hidden');
       
-      // Auto-load yesterday's messages and timestamp divider on first open
       const roomBody = document.getElementById('room-body');
       if (roomBody.children.length === 0) {
         yesterdayMessages.forEach(msg => {
           const bubble = document.createElement('div');
           bubble.className = `msg ${msg.sender}`;
-          bubble.textContent = msg.text;
+          bubble.innerHTML = `${msg.text}<span class="msg-time">${msg.time} ${msg.sender === 'sent' ? '✓✓' : ''}</span>`;
           roomBody.appendChild(bubble);
         });
 
-        // Add "Today" divider right before today's unread messages start
         const divider = document.createElement('div');
         divider.className = 'date-divider';
         divider.textContent = 'Today';
@@ -840,7 +861,7 @@
 
         const bubble = document.createElement('div');
         bubble.className = `msg ${msg.sender}`;
-        bubble.textContent = msg.text;
+        bubble.innerHTML = `${msg.text}<span class="msg-time">${msg.time} ${msg.sender === 'sent' ? '✓✓' : ''}</span>`;
 
         roomBody.appendChild(bubble);
         roomBody.scrollTop = roomBody.scrollHeight;
