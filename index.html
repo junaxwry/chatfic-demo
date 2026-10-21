@@ -497,6 +497,13 @@
       font-size: 14px;
       text-align: left;
     }
+
+    .date-divider {
+      text-align: center;
+      font-size: 11px;
+      color: #8e8e93;
+      margin: 10px 0;
+    }
   </style>
 </head>
 <body>
@@ -695,10 +702,10 @@
           <div class="chat-avatar" style="background: #007aff;">L</div>
           <div class="chat-info">
             <div class="chat-name-row">
-              <span class="chat-name">Yudistira</span>
+              <span class="chat-name">Nakula</span>
               <span class="chat-time">Friday</span>
             </div>
-            <div class="chat-preview">Jun</div>
+            <div class="chat-preview">Jun, rekamannya jan lupa</div>
           </div>
         </div>
       </div>
@@ -712,7 +719,7 @@
         <span style="color: #007aff; font-size: 14px; cursor: pointer;" onclick="goHome()">Home</span>
       </div>
       <div id="room-body" class="room-body" onclick="nextChatMessage()">
-        <!-- Messages appear here on tap -->
+        <!-- Yesterday's messages rendered automatically here -->
       </div>
       <div class="room-footer" onclick="nextChatMessage()">
         <div class="tap-prompt">Ketuk layar untuk balas pesan...</div>
@@ -722,23 +729,27 @@
   </div>
 
   <script>
-    const CORRECT_PASSCODE = "1709"; // Change passcode here if needed
+    const CORRECT_PASSCODE = "1709"; 
     let currentInput = "";
     let chatIndex = 0;
     
-    const chatStory = [
+    // Split messages into "yesterday" (already loaded) and "today" (tapped)
+    const yesterdayMessages = [
       { sender: "received", text: "junaaaaa" },
       { sender: "sent", text: "kenapa dis" },
       { sender: "received", text: "kangen, ayo keluar" },
       { sender: "sent", text: "gmw ah, mager gue" },
       { sender: "received", text: ":((( hayolo temenin aku makan coba" },
       { sender: "sent", text: "iya iya apasih jemput cepat" },
-      { sender: "received", text: "yeyyy otiwiiii" },
+      { sender: "received", text: "yeyyy otiwiiii" }
+    ];
+
+    const todayMessages = [
       { sender: "received", text: "Jun" },
       { sender: "sent", text: "kenapa dis?" },
       { sender: "received", text: "ada hal yang kita perlu omongin" },
       { sender: "sent", text: "apa tuh?" },
-      { sender: "received", text: "Aku suka kamu." },
+      { sender: "received", text: "Aku suka kamu." }
     ];
 
     function showPasscodeView() {
@@ -801,11 +812,30 @@
     function openChatRoom() {
       document.getElementById('chat-list-screen').classList.add('hidden');
       document.getElementById('chat-room-screen').classList.remove('hidden');
+      
+      // Auto-load yesterday's messages and timestamp divider on first open
+      const roomBody = document.getElementById('room-body');
+      if (roomBody.children.length === 0) {
+        yesterdayMessages.forEach(msg => {
+          const bubble = document.createElement('div');
+          bubble.className = `msg ${msg.sender}`;
+          bubble.textContent = msg.text;
+          roomBody.appendChild(bubble);
+        });
+
+        // Add "Today" divider right before today's unread messages start
+        const divider = document.createElement('div');
+        divider.className = 'date-divider';
+        divider.textContent = 'Today';
+        roomBody.appendChild(divider);
+
+        roomBody.scrollTop = roomBody.scrollHeight;
+      }
     }
 
     function nextChatMessage() {
-      if (chatIndex < chatStory.length) {
-        const msg = chatStory[chatIndex];
+      if (chatIndex < todayMessages.length) {
+        const msg = todayMessages[chatIndex];
         const roomBody = document.getElementById('room-body');
 
         const bubble = document.createElement('div');
