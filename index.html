@@ -389,13 +389,8 @@
       width: 48px;
       height: 48px;
       border-radius: 50%;
+      object-fit: cover;
       background: #00a884;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-weight: bold;
-      font-size: 18px;
-      color: white;
     }
 
     .chat-info {
@@ -723,9 +718,9 @@
         <span style="color: #53bdeb; font-size: 16px; cursor: pointer;" onclick="goHome()">Home</span>
       </div>
       <div class="chat-list">
-        <!-- Nakula (Main Chat) -->
+        <!-- Nakula -->
         <div class="chat-item" onclick="openChatRoom('nakula')">
-          <div class="chat-avatar" style="background: #00a884;">N</div>
+          <img src="943785665678860445.jpg" class="chat-avatar" alt="Nakula" onerror="this.style.display='none'" />
           <div class="chat-info">
             <div class="chat-name-row">
               <span class="chat-name">Nakula</span>
@@ -736,7 +731,7 @@
         </div>
         <!-- Yudistira -->
         <div class="chat-item" onclick="openChatRoom('yudistira')">
-          <div class="chat-avatar" style="background: #00a884;">Y</div>
+          <img src="1085649053931964694.jpg" class="chat-avatar" alt="Yudistira" onerror="this.style.display='none'" />
           <div class="chat-info">
             <div class="chat-name-row">
               <span class="chat-name">Yudistira</span>
@@ -747,7 +742,7 @@
         </div>
         <!-- Sadewa -->
         <div class="chat-item" onclick="openChatRoom('sadewa')">
-          <div class="chat-avatar" style="background: #00a884;">S</div>
+          <img src="857021004099852642.jpg" class="chat-avatar" alt="Sadewa" onerror="this.style.display='none'" />
           <div class="chat-info">
             <div class="chat-name-row">
               <span class="chat-name">Sadewa</span>
@@ -758,7 +753,7 @@
         </div>
         <!-- Bima -->
         <div class="chat-item" onclick="openChatRoom('bima')">
-          <div class="chat-avatar" style="background: #00a884;">B</div>
+          <img src="Rafayel (祁煜🐟).jpg" class="chat-avatar" alt="Bima" onerror="this.style.display='none'" />
           <div class="chat-info">
             <div class="chat-name-row">
               <span class="chat-name">Bima</span>
@@ -769,7 +764,7 @@
         </div>
         <!-- Aya -->
         <div class="chat-item" onclick="openChatRoom('aya')">
-          <div class="chat-avatar" style="background: #00a884;">A</div>
+          <img src="⠀⠀₊⠀⠀⠀𑁍ࠬܓ⠀⠀⠀ 💌 ⠀𓈒⠀⠀ ⠀ 𓂃‿.jpg" class="chat-avatar" alt="Aya" onerror="this.style.display='none'" />
           <div class="chat-info">
             <div class="chat-name-row">
               <span class="chat-name">Aya</span>
@@ -780,7 +775,7 @@
         </div>
         <!-- Naia -->
         <div class="chat-item" onclick="openChatRoom('naia')">
-          <div class="chat-avatar" style="background: #00a884;">N</div>
+          <img src="yellow dreamy.jpg" class="chat-avatar" alt="Naia" onerror="this.style.display='none'" />
           <div class="chat-info">
             <div class="chat-name-row">
               <span class="chat-name">Naia</span>
@@ -796,7 +791,7 @@
     <div id="chat-room-screen" class="screen-view app-container hidden">
       <div class="room-header">
         <button class="back-btn" onclick="openChatApp()">‹ Chats</button>
-        <div id="room-avatar" style="width: 36px; height: 36px; border-radius: 50%; background: #00a884; display: flex; justify-content: center; align-items: center; font-weight: bold; font-size: 14px; color: white;">N</div>
+        <img id="room-avatar" src="" style="width: 36px; height: 36px; border-radius: 50%; object-fit: cover;" alt="Avatar" onerror="this.style.display='none'" />
         <span id="room-name" style="font-weight: 600; font-size: 16px; flex: 1; color: #e9edef;">Nakula</span>
         <span style="color: #53bdeb; font-size: 14px; cursor: pointer;" onclick="goHome()">Home</span>
       </div>
@@ -826,11 +821,11 @@
     let activeChatKey = "nakula";
     let chatIndex = 0;
 
-    // Database room chat
+    // Database room chat dengan file foto profil masing-masing
     const chatRoomsData = {
       nakula: {
         name: "Nakula",
-        initial: "N",
+        avatar: "943785665678860445.jpg",
         yesterdayMessages: [
           { sender: "received", text: "Jun, besok jam 10 kumpul ya", time: "21:10" },
           { sender: "sent", text: "Aman, kabari aja", time: "21:11" }
@@ -849,7 +844,7 @@
       },
       yudistira: {
         name: "Yudistira",
-        initial: "Y",
+        avatar: "1085649053931964694.jpg",
         yesterdayMessages: [
           { sender: "received", text: "meng besok aku busy sama kerjaan yaa", time: "20:00" },
           { sender: "received", text: "kamu nanti duduk di rumah aja ya rehat", time: "20:01" },
@@ -861,7 +856,7 @@
       },
       sadewa: {
         name: "Sadewa",
-        initial: "S",
+        avatar: "857021004099852642.jpg",
         yesterdayMessages: [
           { sender: "received", text: "Jun, jadi ikut kumpul ga?", time: "19:00" },
           { sender: "sent", text: "Ntar dikabari ya dew", time: "19:05" }
@@ -870,7 +865,7 @@
       },
       bima: {
         name: "Bima",
-        initial: "B",
+        avatar: "Rafayel (祁煜🐟).jpg",
         yesterdayMessages: [
           { sender: "received", text: "Peminjaman ruangan udah beres ya", time: "14:20" },
           { sender: "sent", text: "Mantap bim,thanks infonya", time: "14:25" }
@@ -879,7 +874,7 @@
       },
       aya: {
         name: "Aya",
-        initial: "A",
+        avatar: "⠀⠀₊⠀⠀⠀𑁍ࠬܓ⠀⠀⠀ 💌 ⠀𓈒⠀⠀ ⠀ 𓂃‿.jpg",
         yesterdayMessages: [
           { sender: "received", text: "Bang Junaa, besok jan lupa beliin manya wet food", time: "16:00" },
           { sender: "sent", text: "Iya siap", time: "16:05" }
@@ -888,7 +883,7 @@
       },
       naia: {
         name: "Naia",
-        initial: "N",
+        avatar: "yellow dreamy.jpg",
         yesterdayMessages: [
           { sender: "received", text: "Makasih ya Jun catatan kuliahnya", time: "11:10" },
           { sender: "sent", text: "Sama-sama Naia", time: "11:15" }
@@ -961,7 +956,7 @@
       
       const chatData = chatRoomsData[activeChatKey];
       document.getElementById('room-name').textContent = chatData.name;
-      document.getElementById('room-avatar').textContent = chatData.initial;
+      document.getElementById('room-avatar').src = chatData.avatar;
 
       document.getElementById('chat-list-screen').classList.add('hidden');
       document.getElementById('chat-room-screen').classList.remove('hidden');
@@ -969,13 +964,11 @@
       const roomBody = document.getElementById('room-body');
       roomBody.innerHTML = '';
 
-      // Tampilkan pesan kemarin jika ada
       if (chatData.yesterdayMessages && chatData.yesterdayMessages.length > 0) {
         chatData.yesterdayMessages.forEach(msg => {
           renderMessage(msg, roomBody);
         });
 
-        // Tampilkan garis pembatas "Today" jika ada pesan hari ini
         if (chatData.todayMessages && chatData.todayMessages.length > 0) {
           const divider = document.createElement('div');
           divider.className = 'date-divider';
@@ -984,12 +977,7 @@
         }
       }
 
-      // Jika ruang chat tidak menggunakan tap-to-next (seperti kontak lain), tampilkan langsung
-      if (!chatData.todayMessages || chatData.todayMessages.length === 0) {
-        roomBody.scrollTop = roomBody.scrollHeight;
-      } else {
-        roomBody.scrollTop = roomBody.scrollHeight;
-      }
+      roomBody.scrollTop = roomBody.scrollHeight;
     }
 
     function renderMessage(msg, container) {
